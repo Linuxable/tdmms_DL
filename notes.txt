@@ -1,3 +1,4 @@
+Mask-RCNN TF 2.4:
 Source: https://github.com/masc-it/Mask-RCNN
 
 Saves only best weights:
@@ -15,5 +16,13 @@ use_multiprocessing=workers > 1,
             use_multiprocessing=False,
 
 
-tdmms data and weights citation:
+Mask-RCNN TF 2.7:
+Source: https://github.com/Kamlesh364/Mask-RCNN-TF2.7.0-keras2.7.0
+
+TensorFlow 2.7.0, Keras 2.7.0-tf, and Python 3.8.10
+
+
+
+
+TDMMS data and weights citation:
 Masubuchi, Satoru; Watanabe, Eisuke; Seo, Yuta; Okazaki, Shota; Sasagawa, Takao; Watanabe, Kenji; et al. (2020). Data for: Deep-Learning-Based Image Segmentation Integrated with Optical Microscopy for Automatically Searching for Two-Dimensional Materials. figshare. Dataset. https://doi.org/10.6084/m9.figshare.11881053.v2
