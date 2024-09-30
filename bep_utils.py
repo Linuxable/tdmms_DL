@@ -5,6 +5,13 @@ import os
 import random
 import shutil
 
+from mrcnn import visualize
+import mrcnn.model as modellib
+from mrcnn import utils
+from mrcnn.model import log
+
+import matplotlib.pyplot as plt
+
 data_types = ['images', 'annotations']
 data_sets = ['train', 'val']
 
@@ -144,6 +151,86 @@ def data_split_annotations(batches: list, ROOT_DIR: str):
         for row in rows:
             if row['data_row']['external_id'] in val_imgs:
                 f.write(str(row)+'\n')
+
+def get_ax(rows=1, cols=1, size=20):
+    """Return a Matplotlib Axes array to be used in
+    all visualizations in the notebook. Provide a
+    central point to control graph sizes.
+    
+    Adjust the size attribute to control how big to render images
+    """
+    _, ax = plt.subplots(rows, cols, figsize=(size*cols, size*rows))
+    return ax
+
+class runModel():
+    def __init__(self, model, config, dataset=None):
+        self.model = model
+        self.config = config
+        self.image_id = None
+        self.dataset = dataset
+    
+    def run(self, dataset=None, rand=False, image_idx=0):
+        """Function to run the model on an image."""
+        if dataset:
+            self.dataset = dataset
+        assert self.dataset
+
+        self.image_id = self.dataset.image_ids[image_idx]
+        if rand:
+            self.image_id = random.choice(self.dataset.image_ids)
+            
+        image, image_meta, gt_class_id, gt_bbox, gt_mask =\
+            modellib.load_image_gt(self.dataset, self.config, self.image_id)
+
+        info = self.dataset.image_info[self.image_id]
+        print("image ID: {}.{} ({}) {}".format(info["source"], info["id"], self.image_id, self.dataset.image_reference(self.image_id)))
+
+        results = self.model.detect([image], verbose=1)
+
+        # Display results
+        ax = get_ax(1)
+        r = results[0]
+        visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
+                                    ['','Mono', 'Few','Thick'], r['scores'], ax=ax,
+                                    title="Predictions")
+        log("gt_class_id", gt_class_id)
+        log("gt_bbox", gt_bbox)
+        log("gt_mask", gt_mask)
+    
+    def gt(self, dataset=None, rand=False, image_idx=0):
+        """Function to show the ground truth of the image, on which run() made predictions."""
+        if dataset:
+            self.dataset = dataset
+        assert self.dataset
+
+        if not self.image_id:
+            self.image_id = self.dataset.image_ids[image_idx]
+            if rand:
+                self.image_id = random.choice(self.dataset.image_ids)
+
+        image = self.dataset.load_image(self.image_id)
+        mask, class_ids = self.dataset.load_mask(self.image_id)
+        original_shape = image.shape
+        # Resize
+        image, window, scale, padding, _ = utils.resize_image(
+            image, 
+            min_dim=self.config.IMAGE_MIN_DIM, 
+            max_dim=self.config.IMAGE_MAX_DIM,
+            mode=self.config.IMAGE_RESIZE_MODE)
+        mask = utils.resize_mask(mask, scale, padding)
+        # Compute Bounding box
+        bbox = utils.extract_bboxes(mask)
+
+        # Display image and additional stats
+        print("image_id: ", self.image_id, self.dataset.image_reference(self.image_id))
+        print("Original shape: ", original_shape)
+        log("image", image)
+        log("mask", mask)
+        log("class_ids", class_ids)
+        print(class_ids)
+        log("bbox", bbox)
+        # Display image and instances
+        visualize.display_instances(image, bbox, mask, class_ids, self.dataset.class_names)
                 
 if __name__ == '__main__':
     ROOT_DIR = os.path.abspath("../../")
