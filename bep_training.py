@@ -9,16 +9,7 @@ from tdmcoco import CocoConfig
 from bep_data import bepDataset
 from bep_utils import check_dir_setup
 
-ROOT_DIR = os.path.abspath("../")
-sys.path.append(ROOT_DIR)
-
 from mrcnn import model as modellib
-
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID" 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-
-COCO_MODEL_PATH = os.path.join(ROOT_DIR, 'weights', 'graphene_mask_rcnn_tdm_0120.h5') # Graphene COCO+2D
-DEFAULT_LOGS_DIR = os.path.join(ROOT_DIR, "logs")
 
 class TrainingConfig(CocoConfig):
     # Batch size = GPU_COUNT * IMAGES_PER_GPU
@@ -26,7 +17,10 @@ class TrainingConfig(CocoConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 2
 
-def train_model():   
+def train_model(ROOT_DIR):
+    COCO_MODEL_PATH = os.path.join(ROOT_DIR, 'weights', 'graphene_mask_rcnn_tdm_0120.h5') # Graphene COCO+2D
+    DEFAULT_LOGS_DIR = os.path.join(ROOT_DIR, "logs")
+
     config = TrainingConfig()
     # config.display()
 
@@ -123,4 +117,10 @@ def train_model():
     #             augmentation=augmentation)    
     
 if __name__ == '__main__':
-    train_model()
+    ROOT_DIR = os.path.abspath("../")
+    sys.path.append(ROOT_DIR)
+
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID" 
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
+    train_model(ROOT_DIR)
