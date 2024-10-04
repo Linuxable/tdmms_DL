@@ -1,0 +1,6 @@
+tensorflow==2.8.2
+h5py==2.10.0
+pycocotools
+imgaug
+scikit-image==0.16.2
+numpy==1.21.0
