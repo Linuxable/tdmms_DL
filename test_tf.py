@@ -1,8 +1,9 @@
 import tensorflow as tf
 
-print("Is GPU Available: ", tf.test.is_gpu_available())
+gpus = tf.config.list_physical_devices('GPU')
 
-gpus = tf.config.experimental.list_physical_devices('GPU')
+print("Is GPU Available: ", gpus)
+
 for gpu in gpus:
   print("Name:", gpu.name, "  Type:", gpu.device_type)
 
