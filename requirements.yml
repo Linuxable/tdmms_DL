@@ -1,6 +1,5 @@
 dependencies:
   - h5py=2.10.0
-  - pycocotools
   - imgaug=0.4.0
   - scikit-image=0.16.2
   - numpy=1.18.5
