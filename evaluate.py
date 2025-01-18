@@ -69,7 +69,7 @@ if not os.path.exists(DEFAULT_LOGS_DIR):
 #                      EVALUATE DATASET                        #
 #--------------------------------------------------------------#
 
-def evaluate_dataset(material: str) -> None:
+def evaluate_dataset(material: str, dataset: str) -> None:
     """
     Function to evaluate the dataset. Returns the amount of images and class counts.
     
@@ -94,7 +94,7 @@ def evaluate_dataset(material: str) -> None:
                 test/
     """
     if material == 'NbSe2':
-        dataset_train, dataset_val, dataset_test = load_train_val_datasets('data', use_bs=True)
+        dataset_train, dataset_val, dataset_test = load_train_val_datasets(dataset, use_bs=True)
     else:
         dataset_train, dataset_val = load_train_val_datasets_tdmms(ROOT_DIR, material)
         dataset_test = None
@@ -106,7 +106,7 @@ def evaluate_dataset(material: str) -> None:
         if dataset[1]:
             all_cls = [[category_mapping[j['category_id']]+material for j in i['annotations']] for i in dataset[1].image_info]
             all_cls = [i for j in all_cls for i in j]
-            print('{}: {} images'.format(dataset[0], len(dataset_train.image_ids)))
+            print('{}: {} images'.format(dataset[0], len(dataset[1].image_ids)))
             print('Class counts:')
             for cls in dataset[1].class_names[1:]:
                 print('        {}: {} images, part {}'.format(cls, all_cls.count(cls), round(all_cls.count(cls)/len(all_cls),2)))
@@ -124,7 +124,7 @@ class EvaluationConfig(CocoConfig):
     IMAGES_PER_GPU = 1
     DETECTION_MIN_CONFIDENCE = 0
 
-def evaluate_model(material: str, weights: str, weights_path: str, dataset_type: str = 'val', use_bs: bool = False) -> None:
+def evaluate_model(material: str, weights: str, weights_path: str, dataset_type: str = 'val', use_bs: bool = False, data_dir: str = 'data_afm') -> None:
     """
     Function to evaluate a model on a dataset. The evaluation consists of calculating the
     precision and recall for multiple IoU thresholds.
@@ -173,17 +173,16 @@ def evaluate_model(material: str, weights: str, weights_path: str, dataset_type:
 
     model.load_weights(MODEL_PATH, by_name=True)
 
-    if use_bs:
-        dataset_type = dataset_type + '_bs'
-
     if material == 'NbSe2':
-        print('Loading NbSe2 {} dataset'.format(dataset_type))
+        if use_bs:
+            dataset_type = dataset_type + '_bs'
+        print('Loading NbSe2 {} {} dataset'.format(dataset_type, data_dir))
         dataset = bepDataset()
-        coco = dataset.load_dir(os.path.join(ROOT_DIR, 'data_afm'), dataset_type, reload_annotations=True, return_coco=True)
+        coco = dataset.load_dir(os.path.join(ROOT_DIR, data_dir), dataset_type, reload_annotations=True, return_coco=True)
         dataset.prepare()
     else:
         dataset = CocoDataset()
-        val_type = "val" 
+        val_type = dataset_type 
         coco = dataset.load_coco(
             os.path.join(ROOT_DIR, 'DL_2DMaterials', 'Dataset_DL_2DMaterials', material),
             val_type,
@@ -225,16 +224,22 @@ if __name__ == '__main__':
     parser.add_argument(
         '--dataset', 
         required=False,
+        default='data_afm',
+        help='data_afm, data_simp_afm etc'
+    )
+    parser.add_argument(
+        '--split', 
+        required=False,
         default='val',
         help='val or test, only for NbSe2 '
     )
 
     args = parser.parse_args()
 
-    check_dir_setup((0.8, 0.1, 0.1), 'data_afm', use_bs=True)
+    check_dir_setup((0.8, 0.1, 0.1), args.dataset, use_bs=True)
 
     if args.command == 'dataset':
-        evaluate_dataset(args.material)
+        evaluate_dataset(args.material, args.dataset)
     
     if args.command == 'model':
-        evaluate_model(args.material, args.weights, args.weights_path, args.dataset, True)
+        evaluate_model(args.material, args.weights, args.weights_path, args.split, True, args.dataset)

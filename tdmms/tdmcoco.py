@@ -43,7 +43,7 @@ from imgaug import augmenters as iaa
 # If the PR is merged then use the original repo.
 # Note: Edit PythonAPI/Makefile and replace "python" with "python3".
 from pycocotools.coco import COCO
-# from pycocotools.cocoeval import COCOeval
+from pycocotools.cocoeval import COCOeval as COCOeval_tdmms
 
 sys.path.append(os.path.abspath(os.path.join(__file__, '../../../')))
 sys.path.append(os.path.abspath(os.path.join(__file__, '../..')))
@@ -417,7 +417,11 @@ def evaluate_coco(model, dataset, coco: COCO, eval_type="bbox", material="NbSe2"
     coco_results = coco.loadRes(results)
 
     # Evaluate
-    cocoEval = COCOeval(coco, coco_results, eval_type, material)
+    if material == 'NbSe2':
+        cocoEval = COCOeval(coco, coco_results, eval_type, material)
+    else:
+        cocoEval = COCOeval_tdmms(coco, coco_results, eval_type)
+        
     cocoEval.params.imgIds = coco_image_ids 
     if material == 'NbSe2':
         cocoEval.params.imgIds_dt = coco_image_ids
