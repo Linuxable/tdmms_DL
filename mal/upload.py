@@ -28,7 +28,7 @@ import config
 # API_KEY = api_config.LABELBOX_API_KEY
 client = lb.Client(API_KEY)
 
-data_pre_fix = ''
+data_pre_fix = 'test_'
 
 def get_datarows(data: str, data_dir: str) -> list:
     data_rows = []

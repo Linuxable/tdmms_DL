@@ -104,6 +104,10 @@ class bepDataset(Dataset):
             "images": [],
         }
 
+        if '_ex_' in img_dir:
+            coco_format['categories'].append({"id": 4, "name": "Massive_NbSe2"})
+            self.class_variable_mapping['massive'] = 4
+
         for row in rows:
             for label in row['projects'][list(row['projects'].keys())[0]]['labels']:
                 for obj in label['annotations']['objects']:                        
