@@ -59,7 +59,7 @@ Set by running: os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 #                                                                                           #
 #-------------------------------------------------------------------------------------------#
 
-def load_train_val_datasets(data: str = 'data', use_bs: bool = False, train_val_only: bool = False) -> Tuple[bepDataset, bepDataset]:
+def load_train_val_datasets(data: str = 'data', use_bs: bool = False) -> Tuple[bepDataset, bepDataset]:
     """
     Function to load train and validation datasets of the BEP data.
     
@@ -87,11 +87,9 @@ def load_train_val_datasets(data: str = 'data', use_bs: bool = False, train_val_
     dataset_val.load_dir(os.path.join(ROOT_DIR, data), data_sets[1], reload_annotations=True)
     dataset_val.prepare()
 
-    dataset_test = None
-    if not train_val_only:
-        dataset_test = bepDataset()
-        dataset_test.load_dir(os.path.join(ROOT_DIR, data), data_sets[2], reload_annotations=True)
-        dataset_test.prepare()
+    dataset_test = bepDataset()
+    dataset_test.load_dir(os.path.join(ROOT_DIR, data), data_sets[2], reload_annotations=True)
+    dataset_test.prepare()
 
     return dataset_train, dataset_val, dataset_test
 

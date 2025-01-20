@@ -124,7 +124,7 @@ def train_model(
     """
 
     # check_dir_setup((0.8, 0.1, 0.1), data='data_simp_afm', use_bs=True)
-    dataset_train, dataset_val, _ = load_train_val_datasets('data_ex_afm', use_bs=True, train_val_only=True)
+    dataset_train, dataset_val, _ = load_train_val_datasets('data_ex_afm', use_bs=True)
 
     config = TrainingConfig(
         len(dataset_train.image_ids),
