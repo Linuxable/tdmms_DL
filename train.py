@@ -69,8 +69,7 @@ if not os.path.exists(DEFAULT_LOGS_DIR):
 class TrainingConfig(CocoConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = BATCH_SIZE
-    # LEARNING_MOMENTUM = 0.95
-    NUM_CLASSES = 1 + 3 + 0
+    NUM_CLASSES = 1 + 3 + 1
 
     def __init__(
         self,
