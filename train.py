@@ -69,7 +69,7 @@ if not os.path.exists(DEFAULT_LOGS_DIR):
 class TrainingConfig(CocoConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = BATCH_SIZE
-    NUM_CLASSES = 1 + 3 + 1
+    NUM_CLASSES = 1 + 3 + 0
 
     def __init__(
         self,
@@ -124,7 +124,7 @@ def train_model(
     """
 
     # check_dir_setup((0.8, 0.1, 0.1), data='data_simp_afm', use_bs=True)
-    dataset_train, dataset_val, _ = load_train_val_datasets('data_ex_afm', use_bs=False)
+    dataset_train, dataset_val, _ = load_train_val_datasets('data_simp_afm', use_bs=False)
 
     config = TrainingConfig(
         len(dataset_train.image_ids),
