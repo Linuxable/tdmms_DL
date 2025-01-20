@@ -85,8 +85,8 @@ class TrainingConfig(CocoConfig):
         
         date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
-        self.CHECKPOINT_NAME = f'{date}_nbse2_ex_{starting_material.lower()}_{last_layers}_{total_image_count}_{batch_size}_'
-        self.NAME = f'nbse2_ex_{starting_material.lower()}_{last_layers}_{total_image_count}_{batch_size}'
+        self.CHECKPOINT_NAME = f'{date}_nbse2_no_bs_{starting_material.lower()}_{last_layers}_{total_image_count}_{batch_size}_'
+        self.NAME = f'nbse2_no_bs_{starting_material.lower()}_{last_layers}_{total_image_count}_{batch_size}'
 
 def train_model(
     starting_material: str = 'MoS2',
@@ -124,7 +124,7 @@ def train_model(
     """
 
     # check_dir_setup((0.8, 0.1, 0.1), data='data_simp_afm', use_bs=True)
-    dataset_train, dataset_val, _ = load_train_val_datasets('data_ex_afm', use_bs=True)
+    dataset_train, dataset_val, _ = load_train_val_datasets('data_ex_afm', use_bs=False)
 
     config = TrainingConfig(
         len(dataset_train.image_ids),
