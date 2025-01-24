@@ -123,6 +123,7 @@ class EvaluationConfig(CocoConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
     DETECTION_MIN_CONFIDENCE = 0
+    NUM_CLASSES = 1 + 3 + 0
 
 def evaluate_model(material: str, weights: str, weights_path: str, dataset_type: str = 'val', use_bs: bool = False, data_dir: str = 'data_afm') -> None:
     """
@@ -242,4 +243,4 @@ if __name__ == '__main__':
         evaluate_dataset(args.material, args.dataset)
     
     if args.command == 'model':
-        evaluate_model(args.material, args.weights, args.weights_path, args.split, True, args.dataset)
+        evaluate_model(args.material, args.weights, args.weights_path, args.split, False, args.dataset)

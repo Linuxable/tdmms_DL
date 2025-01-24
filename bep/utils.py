@@ -214,7 +214,7 @@ def create_dir_setup(
     
     print('Creating directories from batches')
 
-    batches = [i.split('.')[0] for i in os.listdir(os.path.join(ROOT_DIR, data, 'annotations'))]
+    # batches = [i.split('.')[0] for i in os.listdir(os.path.join(ROOT_DIR, data, 'annotations'))]
 
     data_sets = _data_sets
     if use_bs:
