@@ -641,7 +641,7 @@ class runModel():
             bbox,
             mask,
             class_ids,
-            self.dataset.class_names,
+            [i.split('_')[0] for i in self.dataset.class_names],
             ax=ax, 
             title=title,
             show_bbox=show_bbox

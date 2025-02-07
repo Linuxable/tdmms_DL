@@ -91,6 +91,9 @@ def split_images(
     for image_id in image_id_positions:
         image_info = data.image_info[image_id]
 
+        if not '02_michiel_sio2_NbSe2_f3' in image_info['path']:
+            continue
+
         wafer_type = utils.determine_wafer_type(image_info['path'])
 
         if wafer_type == 'unmarked':
@@ -251,7 +254,7 @@ if __name__ == '__main__':
             int(args.annotation_threshold),
             int(args.border),
             args.data,
-            log_iteration=False
+            log_iteration=True
         )
         
     # split_images(

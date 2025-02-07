@@ -14,6 +14,7 @@ How to run from a terminal:
 import os
 import sys
 import argparse
+import matplotlib.pyplot as plt
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # Set the log level of tensorflow, see bep.utils for more information.
 
@@ -122,7 +123,7 @@ class EvaluationConfig(CocoConfig):
     # one image at a time. Batch size = GPU_COUNT * IMAGES_PER_GPU
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
-    DETECTION_MIN_CONFIDENCE = 0
+    DETECTION_MIN_CONFIDENCE = 0.7
     NUM_CLASSES = 1 + 3 + 0
 
 def evaluate_model(material: str, weights: str, weights_path: str, dataset_type: str = 'val', use_bs: bool = False, data_dir: str = 'data_afm') -> None:
@@ -192,7 +193,17 @@ def evaluate_model(material: str, weights: str, weights_path: str, dataset_type:
         dataset.prepare()
 
     print("Running evaluation on {} images.".format(len(dataset.image_ids)))
-    evaluate_coco(model, dataset, coco, "bbox", material)
+    cocoEval = evaluate_coco(model, dataset, coco, "bbox", material)
+
+    # recall = cocoEval.eval['recall'][:,:,0,0]
+    # precisio = cocoEval.eval['precision'][:,:,:,0,0]
+
+    # plt.figure()
+    # plt.plot(cocoEval.eval['recall'], cocoEval.eval['precision'])
+    # plt.xlabel('Recall')
+    # plt.ylabel('Precision')
+    # plt.savefig('RC-curve.png')
+    # plt.show()
 
     return None
 
@@ -243,4 +254,4 @@ if __name__ == '__main__':
         evaluate_dataset(args.material, args.dataset)
     
     if args.command == 'model':
-        evaluate_model(args.material, args.weights, args.weights_path, args.split, False, args.dataset)
+        evaluate_model(args.material, args.weights, args.weights_path, args.split, True, args.dataset)

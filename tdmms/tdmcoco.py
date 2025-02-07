@@ -435,6 +435,8 @@ def evaluate_coco(model, dataset, coco: COCO, eval_type="bbox", material="NbSe2"
         t_prediction, t_prediction / len(image_ids)))
     print("Total time: ", time.time() - t_start)
 
+    return cocoEval
+
 
 ############################################################
 #  Training
