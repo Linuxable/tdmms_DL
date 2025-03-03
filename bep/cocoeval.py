@@ -1,3 +1,5 @@
+"""This module contains a slightly modified version of the COCOeval object from pycocotools."""
+
 __author__ = 'tsungyi'
 
 import numpy as np
@@ -466,7 +468,7 @@ class COCOeval:
             print(iStr.format(titleStr, typeStr, iouStr, areaRng, maxDets, mean_s))
             return mean_s
         def _summarizeDets():
-            stats = np.zeros((12,))
+            stats = np.zeros((19,))
             stats[0] = _summarize(1)
             stats[1] = _summarize(1, iouThr=.5, maxDets=self.params.maxDets[2])
             stats[2] = _summarize(1, iouThr=.75, maxDets=self.params.maxDets[2])
@@ -479,6 +481,15 @@ class COCOeval:
             stats[9] = _summarize(0, areaRng='small', maxDets=self.params.maxDets[2])
             stats[10] = _summarize(0, areaRng='medium', maxDets=self.params.maxDets[2])
             stats[11] = _summarize(0, areaRng='large', maxDets=self.params.maxDets[2])
+
+            stats[12] = _summarize(1, iouThr=.5, areaRng='small', maxDets=self.params.maxDets[2])
+            stats[13] = _summarize(1, iouThr=.5, areaRng='medium', maxDets=self.params.maxDets[2])
+            stats[14] = _summarize(1, iouThr=.5, areaRng='large', maxDets=self.params.maxDets[2])
+
+            stats[15] = _summarize(0, iouThr=.5, maxDets=self.params.maxDets[2])
+            stats[16] = _summarize(0, iouThr=.5, areaRng='small', maxDets=self.params.maxDets[2])
+            stats[17] = _summarize(0, iouThr=.5, areaRng='medium', maxDets=self.params.maxDets[2])
+            stats[18] = _summarize(0, iouThr=.5, areaRng='large', maxDets=self.params.maxDets[2])
             return stats
         def _summarizeKps():
             stats = np.zeros((10,))
