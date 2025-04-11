@@ -7,15 +7,6 @@ import shutil
 import matplotlib.pyplot as plt
 import skimage
 
-
-# Code for debugging -------------------------------------------
-# import sys
-# ROOT_DIR = os.path.abspath(os.path.join(__file__, '../../../'))
-# print('Root directory:',ROOT_DIR)
-# sys.path.append(ROOT_DIR)
-# sys.path.append(os.path.abspath(os.path.join(__file__, '../..')))
-# ----------------------------------------------------------------
-
 from bep.dataset import bepDataset
 from bep.exceptions import WeightsNotFound, IncorrectDataSplit
 from tdmms.tdmcoco import CocoDataset, CocoConfig
@@ -59,7 +50,7 @@ Set by running: os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 #                                                                                           #
 #-------------------------------------------------------------------------------------------#
 
-def load_train_val_datasets(data: str = 'data', use_bs: bool = False) -> Tuple[bepDataset, bepDataset]:
+def load_train_val_datasets(data: str = 'data_simp_afm', use_bs: bool = False) -> Tuple[bepDataset, bepDataset]:
     """
     Function to load train and validation datasets of the BEP data.
     

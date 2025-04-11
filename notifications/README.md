@@ -12,7 +12,8 @@ DISCORD_WEBHOOK_URL = '<your webhook url>'
 5. Download the Discord app.
 
 ### Pushover Notifications
-1. Create a Pushover account.. 
+> This method costs money.
+1. Create a Pushover account.
 2. Create an application.
 3. Add these two lines to the `api_config.py` file in the root directory:
 ```

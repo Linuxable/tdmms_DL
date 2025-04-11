@@ -1,14 +1,19 @@
 """
-Module to evaluate the AI
+Module to evaluate the AI and the dataset
 
 How to run from a terminal:
     1. activate your environment
     2. run: $ py evaluate.py <model or dataset>
-        with optional arguments:    
+        with optional arguments for <dataset>:
+            --material <NbSe2, Graphene, Mos2, BN, or WTe2>
+            --dataset <data_simp_afm, etc., data directory>
+        
+        with optional arguments for <model>:    
             --material <NbSe2, Graphene, Mos2, BN, or WTe2> 
             --weights <NbSe2, Graphene, Mos2, BN, or WTe2>
             --weights_path <filename of NbSe2 weights>
-            --dataset <val or test>
+            --dataset <data_simp_afm, etc., data directory>
+            --split <val or test, only for NbSe2>
 """
 
 import os
@@ -193,17 +198,7 @@ def evaluate_model(material: str, weights: str, weights_path: str, dataset_type:
         dataset.prepare()
 
     print("Running evaluation on {} images.".format(len(dataset.image_ids)))
-    cocoEval = evaluate_coco(model, dataset, coco, "bbox", material)
-
-    # recall = cocoEval.eval['recall'][:,:,0,0]
-    # precisio = cocoEval.eval['precision'][:,:,:,0,0]
-
-    # plt.figure()
-    # plt.plot(cocoEval.eval['recall'], cocoEval.eval['precision'])
-    # plt.xlabel('Recall')
-    # plt.ylabel('Precision')
-    # plt.savefig('RC-curve.png')
-    # plt.show()
+    evaluate_coco(model, dataset, coco, "bbox", material)
 
     return None
 
@@ -242,16 +237,18 @@ if __name__ == '__main__':
     parser.add_argument(
         '--split', 
         required=False,
-        default='val',
+        default='test',
         help='val or test, only for NbSe2 '
     )
 
     args = parser.parse_args()
 
-    # check_dir_setup((0.8, 0.1, 0.1), args.dataset, use_bs=True)
+    image_splitting = True
+
+    # check_dir_setup((0.8, 0.1, 0.1), args.dataset, use_bs=image_splitting)
 
     if args.command == 'dataset':
         evaluate_dataset(args.material, args.dataset)
     
     if args.command == 'model':
-        evaluate_model(args.material, args.weights, args.weights_path, args.split, True, args.dataset)
+        evaluate_model(args.material, args.weights, args.weights_path, args.split, image_splitting, args.dataset)

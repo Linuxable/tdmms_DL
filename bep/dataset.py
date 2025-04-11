@@ -6,14 +6,6 @@ import json
 import cv2
 import numpy as np
 
-# Code for debugging ---------------------------------------------
-# import sys
-# ROOT_DIR = os.path.abspath(os.path.join(__file__, '../../../'))
-# print('Root directory:',ROOT_DIR)
-# sys.path.append(ROOT_DIR)
-# sys.path.append(os.path.abspath(os.path.join(__file__, '../..')))
-# -------------------------------------------------------------------
-
 from pycocotools.coco import COCO
 from mrcnn.utils import Dataset
 from pycocotools import mask as maskUtils
@@ -343,10 +335,3 @@ class bepDataset(Dataset):
         # s += 'Images and annotations:\n' + '\n'.join([i for i in self.image_info])
 
         return s
-
-if __name__ == '__main__':    
-    inspect = bepDataset()
-    inspect.load_dir(os.path.join(ROOT_DIR, 'data_simp_afm'), 'train_bs', reload_annotations=True)
-    inspect.prepare()
-
-    print(inspect.image_info)
