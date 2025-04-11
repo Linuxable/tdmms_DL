@@ -571,11 +571,20 @@ class runModel():
 
         ax = get_ax(1, 1, self.plot_size)
         r = results[0]
+
+        # visualize.display_instances(
+        #     image, r['rois'],
+        #     r['masks'],
+        #     r['class_ids'], 
+        #     self.dataset.class_names, r['scores'],
+        #     ax=ax,
+        #     title=title
+        # )
         visualize.display_instances(
             image, r['rois'],
             r['masks'],
             r['class_ids'], 
-            self.dataset.class_names, r['scores'],
+            ['', 'Class 1 - ', 'Class 2 - ', 'Class 3 - '], r['scores'],
             ax=ax,
             title=title
         )
@@ -636,12 +645,23 @@ class runModel():
 
         ax = get_ax(1, 1, self.plot_size)
         title = 'Ground Truth'
+        # visualize.display_instances(
+        #     image,
+        #     bbox,
+        #     mask,
+        #     class_ids,
+        #     [i.split('_')[0] for i in self.dataset.class_names],
+        #     ax=ax, 
+        #     title=title,
+        #     show_bbox=show_bbox
+        # )
+
         visualize.display_instances(
             image,
             bbox,
             mask,
             class_ids,
-            [i.split('_')[0] for i in self.dataset.class_names],
+            ['', 'Class 1', 'Class 2', 'Class 3'],
             ax=ax, 
             title=title,
             show_bbox=show_bbox

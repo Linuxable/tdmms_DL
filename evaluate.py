@@ -123,7 +123,7 @@ class EvaluationConfig(CocoConfig):
     # one image at a time. Batch size = GPU_COUNT * IMAGES_PER_GPU
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
-    DETECTION_MIN_CONFIDENCE = 0.7
+    DETECTION_MIN_CONFIDENCE = 0
     NUM_CLASSES = 1 + 3 + 0
 
 def evaluate_model(material: str, weights: str, weights_path: str, dataset_type: str = 'val', use_bs: bool = False, data_dir: str = 'data_afm') -> None:
@@ -248,7 +248,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    check_dir_setup((0.8, 0.1, 0.1), args.dataset, use_bs=True)
+    # check_dir_setup((0.8, 0.1, 0.1), args.dataset, use_bs=True)
 
     if args.command == 'dataset':
         evaluate_dataset(args.material, args.dataset)

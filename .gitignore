@@ -4,3 +4,4 @@ mrcnn/__pycache__/
 bep/__pycache__/
 model_assisted_labeling/__pycache__/
 tdmms/__pycache__/
+bep/training_curves_csv
