@@ -1,4 +1,4 @@
-# Mask R-CNN for 2D Materials Detection Fine-tuned on NbSe2
+# Deep learning-based image segmentation of 2D NbSe2 flakes
 
 This repository contains the model, training, and evaluation code for 2D materials detection using Mask R-CNN. The goal of this project is to fine-tune the model of [Masubuchi *et al.*](https://www.nature.com/articles/s41699-020-0137-z), which was created for graphene, MoS2, hBN and WTe2, on NbSe2. This repository is built on the repository of [Masubuchi *et al.*](https://github.com/tdmms/tdmms_DL).
 
